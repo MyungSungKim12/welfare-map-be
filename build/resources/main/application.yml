@@ -3,9 +3,12 @@ spring:
     name: welfare-map-be
 
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+#    url: ${DB_URL}
+#    username: ${DB_USERNAME}
+#    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://db.uimgirgwsqemkluuvdip.supabase.co:5432/postgres
+    username: postgres.uimgirgwsqemkluuvdip
+    password: alksgjalksdlksq
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
