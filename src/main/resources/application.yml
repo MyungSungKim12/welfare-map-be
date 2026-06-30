@@ -3,12 +3,9 @@ spring:
     name: welfare-map-be
 
   datasource:
-#    url: ${DB_URL}
-#    username: ${DB_USERNAME}
-#    password: ${DB_PASSWORD}
-    url: jdbc:postgresql://db.uimgirgwsqemkluuvdip.supabase.co:5432/postgres
-    username: postgres.uimgirgwsqemkluuvdip
-    password: alksgjalksdlksq
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
@@ -19,7 +16,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: ${JPA_SHOW_SQL:false}
     properties:
       hibernate:
         format_sql: true
@@ -69,5 +66,5 @@ app:
 
 logging:
   level:
-    com.welfareMap: DEBUG
-    org.hibernate.SQL: DEBUG
+    com.welfareMap: ${APP_LOG_LEVEL:INFO}
+    org.hibernate.SQL: ${HIBERNATE_SQL_LOG_LEVEL:WARN}
