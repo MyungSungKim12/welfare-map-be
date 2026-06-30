@@ -2,6 +2,11 @@ spring:
   application:
     name: welfare-map-be
 
+  # Node 컨벤션의 .env.local 을 properties 로 강제 로드 (있으면 사용, 없으면 무시)
+  # 운영 환경에서는 OS env / k8s secret 등으로 직접 주입.
+  config:
+    import: optional:file:./.env.local[.properties]
+
   datasource:
     # 둘 다 지원: SPRING_DATASOURCE_*가 우선, 없으면 DB_*로 폴백 (기존 .env.local 호환)
     url: ${SPRING_DATASOURCE_URL:${DB_URL}}
