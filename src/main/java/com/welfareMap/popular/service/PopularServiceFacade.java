@@ -40,7 +40,7 @@ public class PopularServiceFacade {
 
     @Transactional(readOnly = true)
     public List<PopularServiceDto> findTop(int limit) {
-        return repository.findTopByScore(limit).stream()
+        return repository.findTopProjectedByScore(limit).stream()
             .map(PopularServiceDto::from)
             .toList();
     }

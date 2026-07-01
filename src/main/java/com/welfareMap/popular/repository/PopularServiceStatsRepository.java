@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.welfareMap.popular.domain.PopularServiceStats;
+import com.welfareMap.popular.dto.PopularServiceProjection;
 
 public interface PopularServiceStatsRepository extends JpaRepository<PopularServiceStats, String> {
 
@@ -18,6 +19,32 @@ public interface PopularServiceStatsRepository extends JpaRepository<PopularServ
         LIMIT :limit
         """, nativeQuery = true)
     List<PopularServiceStats> findTopByScore(@Param("limit") int limit);
+
+    /**
+     * popular_services + welfare_services LEFT JOIN projection.
+     * welfare_services row 가 정리됐어도 카운터는 유지해서 반환.
+     * alias 는 반드시 double-quoted 로 camelCase 보존.
+     */
+    @Query(value = """
+        SELECT
+          p.cache_key    AS "cacheKey",
+          p.view_count   AS "viewCount",
+          p.click_count  AS "clickCount",
+          p.save_count   AS "saveCount",
+          p.score        AS "score",
+          p.updated_at   AS "updatedAt",
+          w.title        AS "title",
+          w.summary      AS "summary",
+          w.link         AS "link",
+          w.region       AS "region",
+          w.target       AS "target",
+          w.category     AS "category"
+        FROM popular_services p
+        LEFT JOIN welfare_services w ON w.cache_key = p.cache_key
+        ORDER BY p.score DESC NULLS LAST, p.updated_at DESC
+        LIMIT :limit
+        """, nativeQuery = true)
+    List<PopularServiceProjection> findTopProjectedByScore(@Param("limit") int limit);
 
     /**
      * Postgres ON CONFLICT 업서트. 단일 쿼리로 동시성 문제 없이 카운터 증분.

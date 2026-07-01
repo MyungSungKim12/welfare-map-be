@@ -11,8 +11,15 @@ public record PopularServiceDto(
     long clickCount,
     long saveCount,
     BigDecimal score,
-    OffsetDateTime updatedAt
+    OffsetDateTime updatedAt,
+    String title,
+    String summary,
+    String link,
+    String region,
+    String target,
+    String category
 ) {
+    /** Popular 카운터만 있는 경우 (welfare_services JOIN 없이 단건 조회 등) */
     public static PopularServiceDto from(PopularServiceStats e) {
         return new PopularServiceDto(
             e.getCacheKey(),
@@ -20,7 +27,26 @@ public record PopularServiceDto(
             e.getClickCount(),
             e.getSaveCount(),
             e.getScore(),
-            e.getUpdatedAt()
+            e.getUpdatedAt(),
+            null, null, null, null, null, null
+        );
+    }
+
+    /** popular_services + welfare_services JOIN projection */
+    public static PopularServiceDto from(PopularServiceProjection p) {
+        return new PopularServiceDto(
+            p.getCacheKey(),
+            p.getViewCount(),
+            p.getClickCount(),
+            p.getSaveCount(),
+            p.getScore(),
+            p.getUpdatedAt(),
+            p.getTitle(),
+            p.getSummary(),
+            p.getLink(),
+            p.getRegion(),
+            p.getTarget(),
+            p.getCategory()
         );
     }
 }
